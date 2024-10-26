@@ -1,16 +1,4 @@
 {
 	"values": [
-		"minecraft:wooden_axe",
-		"minecraft:stone_axe",
-		"minecraft:iron_axe",
-		"minecraft:diamond_axe",
-		"minecraft:golden_axe",
-		"minecraft:netherite_axe",
-		"minecraft:wooden_sword",
-		"minecraft:stone_sword",
-		"minecraft:iron_sword",
-		"minecraft:diamond_sword",
-		"minecraft:golden_sword",
-		"minecraft:netherite_sword"
 	]
 }
