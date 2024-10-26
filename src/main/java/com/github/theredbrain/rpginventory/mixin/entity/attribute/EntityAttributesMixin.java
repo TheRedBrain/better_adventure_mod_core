@@ -10,6 +10,6 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(EntityAttributes.class)
 public class EntityAttributesMixin {
 	static {
-		RPGInventory.ACTIVE_SPELL_SLOT_AMOUNT = Registry.registerReference(Registries.ATTRIBUTE, RPGInventory.identifier("generic.active_spell_slot_amount"), new ClampedEntityAttribute("attribute.name.generic.active_spell_slot_amount", 0.0, 0.0, 8.0).setTracked(true));
+		RPGInventory.ACTIVE_SPELL_SLOT_AMOUNT = Registry.registerReference(Registries.ATTRIBUTE, RPGInventory.identifier("generic.active_spell_slot_amount"), new ClampedEntityAttribute("attribute.name.generic.active_spell_slot_amount", 0.0, -8.0, 8.0).setTracked(true));
 	}
 }

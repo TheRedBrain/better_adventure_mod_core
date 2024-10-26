@@ -246,7 +246,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 
 	@Override
 	public float rpginventory$getActiveSpellSlotAmount() {
-		return (float) this.getAttributeValue(RPGInventory.ACTIVE_SPELL_SLOT_AMOUNT);
+		return (float) Math.min(8, Math.max(0, Math.min(8, Math.max(0, RPGInventory.serverConfig.default_spell_slot_amount)) + this.getAttributeValue(RPGInventory.ACTIVE_SPELL_SLOT_AMOUNT)));
 	}
 
 	@Override

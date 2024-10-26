@@ -58,6 +58,11 @@ public class ServerConfig implements ConfigData {
 	public boolean show_debug_log = false;
 
 	@Comment("""
+            The default amount of spell slots.
+            Must be between 0 and 8 (both inclusive)
+            """)
+	public int default_spell_slot_amount = 0;
+	@Comment("""
 			Set to false to enable the 2x2 crafting grid
 			in the adventure inventory screen
 			""")
