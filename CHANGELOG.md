@@ -3,6 +3,7 @@
 - removed feature: Attribute Screen, this feature was exported into a standalone mod called "Player Attribute Screen". The "attribute_screen_configuration" config value should work in the new mods config file.
 - added compatibility with "Player Attribute Screen"
 - added server config option to set default spell slot amount
+- added vanilla axes and items from the "More RPG Classes" mods by @Fichte to several item tags
 
 # 2.1.0
 
