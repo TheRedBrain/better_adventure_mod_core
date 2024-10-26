@@ -1,5 +1,6 @@
 package com.github.theredbrain.rpginventory.mixin.entity;
 
+import com.github.theredbrain.rpginventory.RPGInventory;
 import com.github.theredbrain.rpginventory.entity.DuckLivingEntityMixin;
 import com.github.theredbrain.rpginventory.registry.GameRulesRegistry;
 import com.github.theredbrain.rpginventory.registry.Tags;
@@ -30,6 +31,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -74,6 +76,13 @@ public abstract class LivingEntityMixin extends Entity implements DuckLivingEnti
 
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
+	}
+
+	@Inject(method = "createLivingAttributes", at = @At("RETURN"))
+	private static void rpginventory$createLivingAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+		cir.getReturnValue()
+				.add(RPGInventory.ACTIVE_SPELL_SLOT_AMOUNT, 0.0F)
+		;
 	}
 
 	/**

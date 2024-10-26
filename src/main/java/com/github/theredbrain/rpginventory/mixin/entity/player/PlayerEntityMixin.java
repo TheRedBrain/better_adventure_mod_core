@@ -84,13 +84,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 		super(entityType, world);
 	}
 
-	@Inject(method = "createPlayerAttributes", at = @At("RETURN"))
-	private static void rpginventory$createPlayerAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-		cir.getReturnValue()
-				.add(RPGInventory.ACTIVE_SPELL_SLOT_AMOUNT, 1.0F)
-		;
-	}
-
 	@Inject(method = "initDataTracker", at = @At("RETURN"))
 	protected void rpginventory$initDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
 		builder.add(IS_HAND_STACK_SHEATHED, false);
