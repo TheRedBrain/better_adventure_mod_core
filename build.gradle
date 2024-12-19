@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id "com.matthewprenger.cursegradle" version "1.4.0"
 	id "com.github.breadmoirai.github-release" version "2.4.1"
 	id "com.modrinth.minotaur" version "2.+"
@@ -13,7 +13,13 @@ base {
 }
 
 repositories {
-	// Cloth Config
+	// Fzzy Config
+	maven {
+		name = "FzzyMaven"
+		url = "https://maven.fzzyhmstrs.me/"
+	}
+
+	// Cloth Config TODO remove
 	maven {
 		url "https://maven.shedaniel.me/"
 	}
@@ -54,7 +60,10 @@ dependencies {
 	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Cloth Config
+	// Fzzy Config
+	modImplementation"me.fzzyhmstrs:fzzy_config:${project.fzzy_config_version}"
+
+	// Cloth Config TODO remove
 	modImplementation ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}")
 
 	// Trinkets
@@ -63,7 +72,7 @@ dependencies {
 	// Mixin Squared
 	include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.2-beta.4")))
 
-	// Mod Menu
+	// Mod Menu TODO remove
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
 	// Stamina Attributes
@@ -147,7 +156,7 @@ if(project.hasProperty('release_type')) {
 			addGameVersion "Fabric"
 
 			relations {
-				requiredDependency 'cloth-config'
+				requiredDependency 'fzzy-config'
 				requiredDependency 'fabric-api'
 				requiredDependency 'slot-customization-api'
 				requiredDependency 'trinkets'
@@ -183,7 +192,7 @@ if(project.hasProperty('release_type')) {
 			// scope.type
 			// The scope can be `required`, `optional`, `incompatible`, or `embedded`
 			// The type can either be `project` or `version`
-			required.project 'cloth-config'
+			required.project 'fzzy-config'
 			required.project 'fabric-api'
 			required.project 'slot-customization-api'
 			required.project 'trinkets'
