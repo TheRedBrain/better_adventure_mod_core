@@ -1,12 +1,13 @@
 package com.github.theredbrain.rpginventory;
 
+import com.github.theredbrain.backpackattribute.BackpackAttributeClient;
 import com.github.theredbrain.playerattributescreen.PlayerAttributeScreenClient;
 import com.github.theredbrain.rpginventory.config.ClientConfig;
 import com.github.theredbrain.rpginventory.registry.ClientEventsRegistry;
 import com.github.theredbrain.rpginventory.registry.ClientPacketRegistry;
 import com.github.theredbrain.rpginventory.registry.KeyBindingsRegistry;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.fabricmc.api.ClientModInitializer;
@@ -19,7 +20,6 @@ import java.util.List;
 
 
 public class RPGInventoryClient implements ClientModInitializer {
-	public static ConfigHolder<ClientConfig> clientConfigHolder;
 
 	public RPGInventoryClient() {
 	}
@@ -34,7 +34,7 @@ public class RPGInventoryClient implements ClientModInitializer {
 
 	public static void openBackPackScreen(MinecraftClient client) {
 		if (RPGInventory.isBackpackAttributeLoaded) {
-			com.github.theredbrain.backpackattribute.registry.KeyBindingsRegistry.openBackpackScreen(client);
+			BackpackAttributeClient.openBackpackScreen(client);
 		} else if (client.player != null) {
 			client.player.sendMessage(Text.translatable("hud.message.backpackAttributesNotInstalled"));
 		}
@@ -42,7 +42,7 @@ public class RPGInventoryClient implements ClientModInitializer {
 
 	public static void openHandCraftingScreen(MinecraftClient client) {
 		if (RPGInventory.isRPGCraftingLoaded) {
-			// open handcrafting screen // TODO RPG Crafting Integration
+//			RPGCraftingClient.openHandCraftingScreen(client);// TODO RPG Crafting Integration
 		} else if (client.player != null) {
 			client.player.sendMessage(Text.translatable("hud.message.rpgCraftingNotInstalled"));
 		}

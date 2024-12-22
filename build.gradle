@@ -102,6 +102,9 @@ dependencies {
 	// Player Attributes Screen
 	modImplementation "maven.modrinth:player-attribute-screen:${project.player_attribute_screen_version}"
 
+	// RPG Crafting // TODO RPG Crafting Integration
+//	modImplementation "maven.modrinth:rpg-crafting:${project.rpg_crafting_version}"
+
 }
 
 processResources {
@@ -161,11 +164,11 @@ if(project.hasProperty('release_type')) {
 				requiredDependency 'slot-customization-api'
 				requiredDependency 'trinkets'
 				optionalDependency 'food-overhaul-fabric'
-				optionalDependency 'modmenu'
 				optionalDependency 'stamina-attributes'
 				optionalDependency 'inventory-size-attributes'
 				optionalDependency 'backpack-attribute'
 				optionalDependency 'player-attribute-screen'
+				optionalDependency 'rpg-crafting'
 			}
 
 			mainArtifact(remapJar)
@@ -197,12 +200,12 @@ if(project.hasProperty('release_type')) {
 			required.project 'slot-customization-api'
 			required.project 'trinkets'
 			optional.project 'food-overhaul'
-			optional.project 'modmenu'
 			optional.project 'stamina-attributes'
 			optional.project 'various-status-effects'
 			optional.project 'inventory-size-attributes'
 			optional.project 'backpack-attribute'
 			optional.project 'player-attribute-screen'
+			optional.project 'rpg-crafting'
 		}
 	}
 
