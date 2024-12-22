@@ -36,15 +36,15 @@ import java.util.Optional;
 @Mixin(value = SurvivalTrinketSlot.class)
 public abstract class SurvivalTrinketSlotMixin extends Slot {
 
-	@Shadow
+	@Shadow(remap = false)
 	@Final
 	private TrinketInventory trinketInventory;
 
-	@Shadow
+	@Shadow(remap = false)
 	@Final
 	private SlotGroup group;
 
-	@Shadow
+	@Shadow(remap = false)
 	@Final
 	private boolean alwaysVisible;
 
@@ -52,7 +52,7 @@ public abstract class SurvivalTrinketSlotMixin extends Slot {
 		super(inventory, index, x, y);
 	}
 
-	@Inject(method = "<init>", at = @At("TAIL"))
+	@Inject(method = "<init>", at = @At("TAIL"), remap = false)
 	public void SurvivalTrinketSlot(TrinketInventory inventory, int index, int x, int y, SlotGroup group, SlotType type, int slotOffset, boolean alwaysVisible, CallbackInfo ci) {
 		addSlotTooltip(this, group.getName(), type.getName());
 	}
