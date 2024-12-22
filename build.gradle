@@ -105,6 +105,9 @@ dependencies {
 	// RPG Crafting // TODO RPG Crafting Integration
 //	modImplementation "maven.modrinth:rpg-crafting:${project.rpg_crafting_version}"
 
+	// Resource Bar API
+	modImplementation "maven.modrinth:resource-bar-api:${project.resource_bar_api_version}"
+
 }
 
 processResources {

@@ -1,7 +1,5 @@
 package com.github.theredbrain.rpginventory.registry;
 
-import com.github.theredbrain.rpginventory.RPGInventory;
-import com.github.theredbrain.rpginventory.network.packet.ServerConfigSyncPacket;
 import com.github.theredbrain.rpginventory.network.packet.SheatheWeaponsPacket;
 import com.github.theredbrain.rpginventory.network.packet.SheatheWeaponsPacketReceiver;
 import com.github.theredbrain.rpginventory.network.packet.SheathedWeaponsPacket;
@@ -11,17 +9,11 @@ import com.github.theredbrain.rpginventory.network.packet.SwappedHandItemsPacket
 import com.github.theredbrain.rpginventory.network.packet.ToggleTwoHandedStancePacket;
 import com.github.theredbrain.rpginventory.network.packet.ToggleTwoHandedStancePacketReceiver;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 public class ServerPacketRegistry {
 
 	public static void init() {
-
-		PayloadTypeRegistry.playS2C().register(ServerConfigSyncPacket.PACKET_ID, ServerConfigSyncPacket.PACKET_CODEC);
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			ServerPlayNetworking.send(handler.player, new ServerConfigSyncPacket(RPGInventory.SERVER_CONFIG));
-		});
 
 		PayloadTypeRegistry.playS2C().register(SheathedWeaponsPacket.PACKET_ID, SheathedWeaponsPacket.PACKET_CODEC);
 

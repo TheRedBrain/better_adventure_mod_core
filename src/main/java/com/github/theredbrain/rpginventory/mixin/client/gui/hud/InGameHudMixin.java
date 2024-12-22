@@ -44,28 +44,28 @@ public abstract class InGameHudMixin {
 	@Unique
 	private static final Identifier HOTBAR_ALTERNATE_HAND_SLOTS_TEXTURE = RPGInventory.identifier("hud/hotbar_alternate_hand_slots");
 
-	@WrapOperation(
-			method = "renderMainHud",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
-	)
-	private void bypassExpensiveCalculationIfNecessary(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
-//		if (InventorySizeAttributesClient.CLIENT_CONFIG.hud_shows_disabled_hotbar_slots.get()) {
-//			original.call(instance, context, tickCounter);
-//		} else {
-//			PlayerEntity playerEntity = this.getCameraPlayer();
-//			if (playerEntity != null) {
-//				int activeHotbarSlotAmount = InventorySizeAttributes.getActiveHotbarSlotAmount(playerEntity);
-//				int newX = instance.getScaledWindowWidth() / 2;
-//				int newWidth = 182;
-//				instance.drawGuiTexture(texture, newX, y, newWidth, height);
-//			}
-//		}
-		// TODO if alternative hotbar is enabled
-//				do all the stuff
-//				else render the vanilla hotbar
-//				use existing config options to customize the alternative hotbar
-//				add support for Raised
-	}
+//	@WrapOperation(
+//			method = "renderMainHud",
+//			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
+//	)
+//	private void bypassExpensiveCalculationIfNecessary(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
+////		if (InventorySizeAttributesClient.CLIENT_CONFIG.hud_shows_disabled_hotbar_slots.get()) {
+////			original.call(instance, context, tickCounter);
+////		} else {
+////			PlayerEntity playerEntity = this.getCameraPlayer();
+////			if (playerEntity != null) {
+////				int activeHotbarSlotAmount = InventorySizeAttributes.getActiveHotbarSlotAmount(playerEntity);
+////				int newX = instance.getScaledWindowWidth() / 2;
+////				int newWidth = 182;
+////				instance.drawGuiTexture(texture, newX, y, newWidth, height);
+////			}
+////		}
+//		// TODO if alternative hotbar is enabled
+////				do all the stuff
+////				else render the vanilla hotbar
+////				use existing config options to customize the alternative hotbar
+////				add support for Raised
+//	}
 
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
 	private void rpginventory$post_renderHotbar(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {

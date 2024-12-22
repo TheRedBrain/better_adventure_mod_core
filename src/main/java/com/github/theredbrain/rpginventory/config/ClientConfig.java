@@ -52,8 +52,8 @@ public class ClientConfig extends Config {
 
 	//		@ConfigEntry.Gui.PrefixText
 	public ValidatedBoolean slots_with_unusable_items_have_overlay = new ValidatedBoolean(true);
-	public ValidatedColor first_overlay_colour_for_slots_with_unusable_items = new ValidatedColor(200, 5, 5);
-	public ValidatedColor second_overlay_colour_for_slots_with_unusable_items = new ValidatedColor(200, 5, 5);
+	public ValidatedColor first_overlay_colour_for_slots_with_unusable_items = new ValidatedColor(200, 5, 5, 50);
+	public ValidatedColor second_overlay_colour_for_slots_with_unusable_items = new ValidatedColor(200, 5, 5, 50);
 	public ValidatedBoolean show_slot_tooltips = new ValidatedBoolean(true);
 	public ValidatedBoolean show_item_tooltip_two_handed_items = new ValidatedBoolean(true);
 	public ValidatedBoolean show_item_tooltip_equipment_slots = new ValidatedBoolean(true);

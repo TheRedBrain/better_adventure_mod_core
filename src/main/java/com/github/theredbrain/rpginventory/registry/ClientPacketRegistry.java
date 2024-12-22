@@ -1,7 +1,5 @@
 package com.github.theredbrain.rpginventory.registry;
 
-import com.github.theredbrain.rpginventory.RPGInventory;
-import com.github.theredbrain.rpginventory.network.packet.ServerConfigSyncPacket;
 import com.github.theredbrain.rpginventory.network.packet.SheathedWeaponsPacket;
 import com.github.theredbrain.rpginventory.network.packet.SheathedWeaponsPacketReceiver;
 import com.github.theredbrain.rpginventory.network.packet.SwappedHandItemsPacket;
@@ -19,8 +17,5 @@ public class ClientPacketRegistry {
 
 		ClientPlayNetworking.registerGlobalReceiver(SheathedWeaponsPacket.PACKET_ID, new SheathedWeaponsPacketReceiver());
 
-		ClientPlayNetworking.registerGlobalReceiver(ServerConfigSyncPacket.PACKET_ID, (payload, context) -> {
-			RPGInventory.SERVER_CONFIG = payload.serverConfig();
-		});
 	}
 }
