@@ -36,10 +36,10 @@ public abstract class PlayerScreenHandlerOffHandSlotMixin extends Slot {
 			bl = this.field_39410.getServer().getGameRules().getBoolean(GameRulesRegistry.CAN_CHANGE_EQUIPMENT);
 		}
 
-		Optional<RegistryEntry.Reference<StatusEffect>> civilisation_status_effect = Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(RPGInventory.serverConfig.civilisation_status_effect_identifier));
+		Optional<RegistryEntry.Reference<StatusEffect>> civilisation_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.civilisation_status_effect_identifier.get());
 		boolean hasCivilisationEffect = civilisation_status_effect.isPresent() && this.field_39410.hasStatusEffect(civilisation_status_effect.get());
 
-		Optional<RegistryEntry.Reference<StatusEffect>> wilderness_status_effect = Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(RPGInventory.serverConfig.wilderness_status_effect_identifier));
+		Optional<RegistryEntry.Reference<StatusEffect>> wilderness_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.wilderness_status_effect_identifier.get());
 		boolean hasWildernessEffect = wilderness_status_effect.isPresent() && this.field_39410.hasStatusEffect(wilderness_status_effect.get());
 
 		return stack.isIn(Tags.OFFHAND_ITEMS) && (hasCivilisationEffect || this.field_39410.isCreative() || (bl && !hasWildernessEffect)) && !((DuckPlayerEntityMixin) this.field_39410).rpginventory$isOffhandStackSheathed();

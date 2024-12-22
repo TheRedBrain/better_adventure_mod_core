@@ -7,6 +7,8 @@ import com.github.theredbrain.rpginventory.entity.player.DuckPlayerEntityMixin;
 import com.github.theredbrain.rpginventory.entity.player.DuckPlayerInventoryMixin;
 import com.github.theredbrain.rpginventory.registry.Tags;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
@@ -42,11 +44,34 @@ public abstract class InGameHudMixin {
 	@Unique
 	private static final Identifier HOTBAR_ALTERNATE_HAND_SLOTS_TEXTURE = RPGInventory.identifier("hud/hotbar_alternate_hand_slots");
 
+	@WrapOperation(
+			method = "renderMainHud",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
+	)
+	private void bypassExpensiveCalculationIfNecessary(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
+//		if (InventorySizeAttributesClient.CLIENT_CONFIG.hud_shows_disabled_hotbar_slots.get()) {
+//			original.call(instance, context, tickCounter);
+//		} else {
+//			PlayerEntity playerEntity = this.getCameraPlayer();
+//			if (playerEntity != null) {
+//				int activeHotbarSlotAmount = InventorySizeAttributes.getActiveHotbarSlotAmount(playerEntity);
+//				int newX = instance.getScaledWindowWidth() / 2;
+//				int newWidth = 182;
+//				instance.drawGuiTexture(texture, newX, y, newWidth, height);
+//			}
+//		}
+		// TODO if alternative hotbar is enabled
+//				do all the stuff
+//				else render the vanilla hotbar
+//				use existing config options to customize the alternative hotbar
+//				add support for Raised
+	}
+
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
 	private void rpginventory$post_renderHotbar(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
 		PlayerEntity playerEntity = this.getCameraPlayer();
 		if (playerEntity != null) {
-			ClientConfig.GeneralClientConfig generalClientConfig = RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig;
+			ClientConfig clientConfig = RPGInventoryClient.CLIENT_CONFIG;
 			ItemStack itemStackHand = ((DuckPlayerInventoryMixin) playerEntity.getInventory()).rpginventory$getHand();
 			ItemStack itemStackOffHand = playerEntity.getInventory().offHand.get(0);
 			ItemStack itemStackAlternativeHand = ((DuckPlayerInventoryMixin) playerEntity.getInventory()).rpginventory$getAlternativeHand();
@@ -64,13 +89,13 @@ public abstract class InGameHudMixin {
 			int x;
 			int y;
 
-			if (generalClientConfig.show_empty_hand_slots || !(itemStackHand.isEmpty() || itemStackHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackOffHand.isEmpty() || itemStackOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
-				x = context.getScaledWindowWidth() / 2 + generalClientConfig.hand_slots_offset_x;
-				y = context.getScaledWindowHeight() + generalClientConfig.hand_slots_offset_y;
+			if (clientConfig.show_empty_hand_slots.get() || !(itemStackHand.isEmpty() || itemStackHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackOffHand.isEmpty() || itemStackOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
+				x = context.getScaledWindowWidth() / 2 + clientConfig.hand_slots_offset_x.get();
+				y = context.getScaledWindowHeight() + clientConfig.hand_slots_offset_y.get();
 
 				context.drawGuiTexture(HOTBAR_HAND_SLOTS_TEXTURE, x, y, 49, 24);
 
-				boolean offhand_slot_is_right = generalClientConfig.offhand_item_is_right;
+				boolean offhand_slot_is_right = clientConfig.offhand_item_is_right.get();
 				this.renderHotbarItem(context, x + 23, y + 4, tickCounter, playerEntity, offhand_slot_is_right ? itemStackOffHand : itemStackHand, l++);
 				this.renderHotbarItem(context, x + 3, y + 4, tickCounter, playerEntity, offhand_slot_is_right ? itemStackHand : itemStackOffHand, l++);
 
@@ -83,13 +108,13 @@ public abstract class InGameHudMixin {
 				}
 			}
 
-			if (generalClientConfig.show_empty_alternative_hand_slots || !(itemStackAlternativeHand.isEmpty() || itemStackAlternativeHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackAlternativeOffHand.isEmpty() || itemStackAlternativeOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
-				x = context.getScaledWindowWidth() / 2 + generalClientConfig.alternative_hand_slots_offset_x;
-				y = context.getScaledWindowHeight() + generalClientConfig.alternative_hand_slots_offset_y;
+			if (clientConfig.show_empty_alternative_hand_slots.get() || !(itemStackAlternativeHand.isEmpty() || itemStackAlternativeHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackAlternativeOffHand.isEmpty() || itemStackAlternativeOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
+				x = context.getScaledWindowWidth() / 2 + clientConfig.alternative_hand_slots_offset_x.get();
+				y = context.getScaledWindowHeight() + clientConfig.alternative_hand_slots_offset_y.get();
 
 				context.drawGuiTexture(HOTBAR_ALTERNATE_HAND_SLOTS_TEXTURE, x, y, 49, 24);
 
-				boolean alternative_offhand_slot_is_right = generalClientConfig.alternative_offhand_item_is_right;
+				boolean alternative_offhand_slot_is_right = clientConfig.alternative_offhand_item_is_right.get();
 				this.renderHotbarItem(context, x + 10, y + 4, tickCounter, playerEntity, alternative_offhand_slot_is_right ? itemStackAlternativeHand : itemStackAlternativeOffHand, l++);
 				this.renderHotbarItem(context, x + 30, y + 4, tickCounter, playerEntity, alternative_offhand_slot_is_right ? itemStackAlternativeOffHand : itemStackAlternativeHand, l);
 			}
@@ -106,7 +131,7 @@ public abstract class InGameHudMixin {
 		if (playerEntity != null) {
 			isHandSheathed = ((DuckPlayerEntityMixin) playerEntity).rpginventory$isHandStackSheathed();
 		}
-		return isHandSheathed || RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig.always_show_selected_hotbar_slot;
+		return isHandSheathed || RPGInventoryClient.CLIENT_CONFIG.always_show_selected_hotbar_slot.get();
 	}
 
 	// effectively disables rendering of the normal offhand slot in the HUD
@@ -130,6 +155,6 @@ public abstract class InGameHudMixin {
 			)
 	)
 	private static int overhauleddamage$redirect_getArmor(PlayerEntity instance) {
-		return RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig.show_armor_bar ? instance.getArmor() : 0;
+		return RPGInventoryClient.CLIENT_CONFIG.show_armor_bar.get() ? instance.getArmor() : 0;
 	}
 }

@@ -20,7 +20,7 @@ public class ServerPacketRegistry {
 
 		PayloadTypeRegistry.playS2C().register(ServerConfigSyncPacket.PACKET_ID, ServerConfigSyncPacket.PACKET_CODEC);
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			ServerPlayNetworking.send(handler.player, new ServerConfigSyncPacket(RPGInventory.serverConfig));
+			ServerPlayNetworking.send(handler.player, new ServerConfigSyncPacket(RPGInventory.SERVER_CONFIG));
 		});
 
 		PayloadTypeRegistry.playS2C().register(SheathedWeaponsPacket.PACKET_ID, SheathedWeaponsPacket.PACKET_CODEC);

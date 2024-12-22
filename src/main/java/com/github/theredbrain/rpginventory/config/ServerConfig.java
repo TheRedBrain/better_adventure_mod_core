@@ -1,153 +1,156 @@
 package com.github.theredbrain.rpginventory.config;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
+import com.github.theredbrain.rpginventory.RPGInventory;
+import me.fzzyhmstrs.fzzy_config.annotations.ConvertFrom;
+import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
-@Config(
-		name = "server"
-)
-public class ServerConfig implements ConfigData {
+@ConvertFrom(fileName = "server.json5", folder = "rpginventory")
+public class ServerConfig extends Config {
+
+	public ServerConfig() {
+		super(RPGInventory.identifier("server"));
+	}
 
 	@Comment("""
 			When true, all (off)hand slots can only hold items in the item tags 'rpginventory:hand_items' and 'rpginventory:offhand_items', respectively.
-			
+						
 			It is recommended to not set this to false and instead add items to the item tags when necessary. All other items can still be accessed via the hotbar.
 			""")
-	public boolean are_hand_items_restricted_to_item_tags = true;
+	public ValidatedBoolean are_hand_items_restricted_to_item_tags = new ValidatedBoolean(true);
 
 	@Comment("When false, toggling the two-handed stance is not possible when the main hand is sheathed.")
-	public boolean always_allow_toggling_two_handed_stance = false;
+	public ValidatedBoolean always_allow_toggling_two_handed_stance = new ValidatedBoolean(false);
 
 	@Comment("""
 			When the mod 'Stamina Attributes' is installed, the following 6 options take effect
-			
+						
 			When true, stamina must be above 0 for swapping hand items.
 			""")
-	public boolean swapping_hand_items_requires_stamina = true;
+	public ValidatedBoolean swapping_hand_items_requires_stamina = new ValidatedBoolean(true);
 	@Comment("Stamina cost for toggling two handed stance")
-	public float swapping_hand_items_stamina_cost = 1.0f;
+	public ValidatedFloat swapping_hand_items_stamina_cost = new ValidatedFloat(1.0f);
 
 	@Comment("When true, stamina must be above 0 for sheathing hand items.")
-	public boolean sheathing_hand_items_requires_stamina = true;
+	public ValidatedBoolean sheathing_hand_items_requires_stamina = new ValidatedBoolean(true);
 	@Comment("Stamina cost for toggling two handed stance")
-	public float sheathing_hand_items_stamina_cost = 1.0f;
+	public ValidatedFloat sheathing_hand_items_stamina_cost = new ValidatedFloat(1.0f);
 
 	@Comment("When true, stamina must be above 0 for toggling two handed stance.")
-	public boolean toggling_two_handed_stance_requires_stamina = true;
+	public ValidatedBoolean toggling_two_handed_stance_requires_stamina = new ValidatedBoolean(true);
 	@Comment("Stamina cost for toggling two handed stance")
-	public float toggling_two_handed_stance_stamina_cost = 1.0f;
+	public ValidatedFloat toggling_two_handed_stance_stamina_cost = new ValidatedFloat(1.0f);
 
-	public String keep_inventory_status_effect_identifier = "variousstatuseffects:keep_inventory";
+	public ValidatedIdentifier keep_inventory_status_effect_identifier = new ValidatedIdentifier("variousstatuseffects:keep_inventory");
 
-	public String civilisation_status_effect_identifier = "variousstatuseffects:civilisation";
+	public ValidatedIdentifier civilisation_status_effect_identifier = new ValidatedIdentifier("variousstatuseffects:civilisation");
 
-	public String wilderness_status_effect_identifier = "variousstatuseffects:wilderness";
+	public ValidatedIdentifier wilderness_status_effect_identifier = new ValidatedIdentifier("variousstatuseffects:wilderness");
 
 	@Comment("This status effect enables the building mode")
-	public String building_mode_status_effect_identifier = "scriptblocks:building_mode";
+	public ValidatedIdentifier building_mode_status_effect_identifier = new ValidatedIdentifier("scriptblocks:building_mode");
 
 	@Comment("This status effect is applied when an item in the 'non_two_handed_items' item tag is equipped")
-	public String needs_two_handing_status_effect_identifier = "variousstatuseffects:needs_two_handing";
+	public ValidatedIdentifier needs_two_handing_status_effect_identifier = new ValidatedIdentifier("variousstatuseffects:needs_two_handing");
 
 	@Comment("This status effect is applied when an item which is not in the 'attack_items' item tag is equipped and the 'allow_attacking_with_non_attack_items' option is set to false")
-	public String no_attack_item_status_effect_identifier = "variousstatuseffects:no_attack_item";
-	public boolean allow_attacking_with_non_attack_items = true;
+	public ValidatedIdentifier no_attack_item_status_effect_identifier = new ValidatedIdentifier("variousstatuseffects:no_attack_item");
+	public ValidatedBoolean allow_attacking_with_non_attack_items = new ValidatedBoolean(true);
 
 	@Comment("Additional debug log is shown in the console.")
-	public boolean show_debug_log = false;
+	public ValidatedBoolean show_debug_log = new ValidatedBoolean(false);
 
 	@Comment("""
-            The default amount of spell slots.
-            Must be between 0 and 8 (both inclusive)
-            """)
-	public int default_spell_slot_amount = 0;
+			The default amount of spell slots.
+			Must be between 0 and 8 (both inclusive)
+			""")
+	public ValidatedInt default_spell_slot_amount = new ValidatedInt(0);
 	@Comment("""
 			Set to false to enable the 2x2 crafting grid
 			in the adventure inventory screen
 			""")
-	public boolean disable_inventory_crafting_slots = false;
+	public ValidatedBoolean disable_inventory_crafting_slots = new ValidatedBoolean(false);
 	@Comment("default: 97")
-	public int inventory_crafting_slots_x_offset = 97;
+	public ValidatedInt inventory_crafting_slots_x_offset = new ValidatedInt(97);
 	@Comment("default: 42")
-	public int inventory_crafting_slots_y_offset = 42;
+	public ValidatedInt inventory_crafting_slots_y_offset = new ValidatedInt(42);
 
 	@Comment("default: 98")
-	public int spell_slots_x_offset = 98;
+	public ValidatedInt spell_slots_x_offset = new ValidatedInt(98);
 	@Comment("default: 90")
-	public int spell_slots_y_offset = 90;
+	public ValidatedInt spell_slots_y_offset = new ValidatedInt(90);
 
 	@Comment("default: 8")
-	public int head_slot_x_offset = 33;
+	public ValidatedInt head_slot_x_offset = new ValidatedInt(33);
 	@Comment("default: 72")
-	public int head_slot_y_offset = 18;
+	public ValidatedInt head_slot_y_offset = new ValidatedInt(18);
 
 	@Comment("default: 8")
-	public int chest_slot_x_offset = 8;
+	public ValidatedInt chest_slot_x_offset = new ValidatedInt(8);
 	@Comment("default: 72")
-	public int chest_slot_y_offset = 54;
+	public ValidatedInt chest_slot_y_offset = new ValidatedInt(54);
 
 	@Comment("default: 8")
-	public int legs_slot_x_offset = 8;
+	public ValidatedInt legs_slot_x_offset = new ValidatedInt(8);
 	@Comment("default: 72")
-	public int legs_slot_y_offset = 90;
+	public ValidatedInt legs_slot_y_offset = new ValidatedInt(90);
 
 	@Comment("default: 8")
-	public int feet_slot_x_offset = 77;
+	public ValidatedInt feet_slot_x_offset = new ValidatedInt(77);
 	@Comment("default: 72")
-	public int feet_slot_y_offset = 90;
+	public ValidatedInt feet_slot_y_offset = new ValidatedInt(90);
 
 	@Comment("default: 8")
-	public int belts_group_x_offset = 8;
+	public ValidatedInt belts_group_x_offset = new ValidatedInt(8);
 	@Comment("default: 72")
-	public int belts_group_y_offset = 72;
+	public ValidatedInt belts_group_y_offset = new ValidatedInt(72);
 
 	@Comment("default: 8")
-	public int shoulders_group_x_offset = 8;
+	public ValidatedInt shoulders_group_x_offset = new ValidatedInt(8);
 	@Comment("default: 36")
-	public int shoulders_group_y_offset = 36;
+	public ValidatedInt shoulders_group_y_offset = new ValidatedInt(36);
 
 	@Comment("default: 52")
-	public int necklaces_group_x_offset = 52;
+	public ValidatedInt necklaces_group_x_offset = new ValidatedInt(52);
 	@Comment("default: 18")
-	public int necklaces_group_y_offset = 18;
+	public ValidatedInt necklaces_group_y_offset = new ValidatedInt(18);
 
 	@Comment("default: 77")
-	public int rings_1_group_x_offset = 77;
+	public ValidatedInt rings_1_group_x_offset = new ValidatedInt(77);
 	@Comment("default: 36")
-	public int rings_1_group_y_offset = 36;
+	public ValidatedInt rings_1_group_y_offset = new ValidatedInt(36);
 
 	@Comment("default: 77")
-	public int rings_2_group_x_offset = 77;
+	public ValidatedInt rings_2_group_x_offset = new ValidatedInt(77);
 	@Comment("default: 54")
-	public int rings_2_group_y_offset = 54;
+	public ValidatedInt rings_2_group_y_offset = new ValidatedInt(54);
 
 	@Comment("default: 77")
-	public int gloves_group_x_offset = 77;
+	public ValidatedInt gloves_group_x_offset = new ValidatedInt(77);
 	@Comment("default: 72")
-	public int gloves_group_y_offset = 72;
+	public ValidatedInt gloves_group_y_offset = new ValidatedInt(72);
 
 	@Comment("default: 8")
-	public int hand_group_x_offset = 8;
+	public ValidatedInt hand_group_x_offset = new ValidatedInt(8);
 	@Comment("default: 108")
-	public int hand_group_y_offset = 108;
+	public ValidatedInt hand_group_y_offset = new ValidatedInt(108);
 
 	@Comment("default: 26")
-	public int offhand_slot_x_offset = 26;
+	public ValidatedInt offhand_slot_x_offset = new ValidatedInt(26);
 	@Comment("default: 108")
-	public int offhand_slot_y_offset = 108;
+	public ValidatedInt offhand_slot_y_offset = new ValidatedInt(108);
 
 	@Comment("default: 59")
-	public int alternative_hand_group_x_offset = 59;
+	public ValidatedInt alternative_hand_group_x_offset = new ValidatedInt(59);
 	@Comment("default: 108")
-	public int alternative_hand_group_y_offset = 108;
+	public ValidatedInt alternative_hand_group_y_offset = new ValidatedInt(108);
 
 	@Comment("default: 77")
-	public int alternative_offhand_group_x_offset = 77;
+	public ValidatedInt alternative_offhand_group_x_offset = new ValidatedInt(77);
 	@Comment("default: 108")
-	public int alternative_offhand_group_y_offset = 108;
-
-	public ServerConfig() {
-
-	}
+	public ValidatedInt alternative_offhand_group_y_offset = new ValidatedInt(108);
 }

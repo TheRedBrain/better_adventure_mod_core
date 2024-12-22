@@ -58,7 +58,7 @@ public class HandledScreenMixin {
 	private void rpginventory$drawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
 		// draw slot overlay
 		ItemStack stack = slot.getStack();
-		if (!stack.isEmpty() && stack.isDamageable() && stack.getDamage() >= stack.getMaxDamage() - 1 && stack.isIn(Tags.UNUSABLE_WHEN_LOW_DURABILITY) && RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig.slots_with_unusable_items_have_overlay) {
+		if (!stack.isEmpty() && stack.isDamageable() && stack.getDamage() >= stack.getMaxDamage() - 1 && stack.isIn(Tags.UNUSABLE_WHEN_LOW_DURABILITY) && RPGInventoryClient.CLIENT_CONFIG.slots_with_unusable_items_have_overlay.get()) {
 			rpginventory$drawDisabledItemSlotHighlight(context, slot.x, slot.y, 0);
 		}
 	}
@@ -67,8 +67,8 @@ public class HandledScreenMixin {
 	private static void rpginventory$drawDisabledItemSlotHighlight(DrawContext context, int x, int y, int z) {
 		RenderSystem.disableDepthTest();
 		RenderSystem.colorMask(true, true, true, false);
-		ClientConfig.GeneralClientConfig generalClientConfig = RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig;
-		context.fillGradient(RenderLayer.getGuiOverlay(), x, y, x + 16, y + 16, generalClientConfig.first_overlay_colour_for_slots_with_unusable_items, generalClientConfig.second_overlay_colour_for_slots_with_unusable_items, z);
+		ClientConfig clientConfig = RPGInventoryClient.CLIENT_CONFIG;
+		context.fillGradient(RenderLayer.getGuiOverlay(), x, y, x + 16, y + 16, clientConfig.first_overlay_colour_for_slots_with_unusable_items.toInt(), clientConfig.second_overlay_colour_for_slots_with_unusable_items.toInt(), z);
 		RenderSystem.colorMask(true, true, true, true);
 		RenderSystem.enableDepthTest();
 	}

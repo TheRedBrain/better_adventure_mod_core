@@ -52,7 +52,7 @@ public class SheathedOffHandItemFeatureRenderer<T extends LivingEntity> extends 
 				float rotation_positive_y = 90.0F;
 				float rotation_positive_x = -15.0F;
 				String itemId = Registries.ITEM.getId(offHandItem).toString();
-				Float[] itemConfiguration = RPGInventoryClient.clientConfigHolder.getConfig().sheathedItemPositionsClientConfig.sheathed_offhand_item_positions.get(itemId);
+				Float[] itemConfiguration = RPGInventoryClient.CLIENT_CONFIG.sheathed_offhand_item_positions.get(itemId);
 				if (itemConfiguration != null && itemConfiguration.length == 9) {
 					initial_translation_x = itemConfiguration[0];
 					initial_translation_y = itemConfiguration[1];

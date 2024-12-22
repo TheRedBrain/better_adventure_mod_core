@@ -7,6 +7,7 @@ import com.github.theredbrain.rpginventory.registry.ClientEventsRegistry;
 import com.github.theredbrain.rpginventory.registry.ClientPacketRegistry;
 import com.github.theredbrain.rpginventory.registry.KeyBindingsRegistry;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
+import me.fzzyhmstrs.fzzy_config.api.RegisterType;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
@@ -20,6 +21,7 @@ import java.util.List;
 
 
 public class RPGInventoryClient implements ClientModInitializer {
+	public static ClientConfig CLIENT_CONFIG = ConfigApiJava.registerAndLoadConfig(ClientConfig::new, RegisterType.CLIENT);
 
 	public RPGInventoryClient() {
 	}
@@ -50,10 +52,6 @@ public class RPGInventoryClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// Config
-		AutoConfig.register(ClientConfig.class, PartitioningSerializer.wrap(JanksonConfigSerializer::new));
-		clientConfigHolder = AutoConfig.getConfigHolder(ClientConfig.class);
-
 		// Packets
 		ClientPacketRegistry.init();
 

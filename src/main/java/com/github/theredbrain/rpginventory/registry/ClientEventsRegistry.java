@@ -11,13 +11,13 @@ public class ClientEventsRegistry {
 
 	public static void initializeClientEvents() {
 		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
-			ClientConfig.GeneralClientConfig generalClientConfig = RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig;
-			if (stack.isIn(Tags.TWO_HANDED_ITEMS) && generalClientConfig.show_item_tooltip_two_handed_items) {
+			ClientConfig clientConfig = RPGInventoryClient.CLIENT_CONFIG;
+			if (stack.isIn(Tags.TWO_HANDED_ITEMS) && clientConfig.show_item_tooltip_two_handed_items.get()) {
 				lines.add(Text.translatable("item.additional_tooltip.functionality.two_handed_item"));
 			}
 
 			// equipment slots
-			if (generalClientConfig.show_item_tooltip_equipment_slots) {
+			if (clientConfig.show_item_tooltip_equipment_slots.get()) {
 				Equipment equipment = Equipment.fromStack(stack);
 				if (stack.isIn(Tags.HELMETS) || (equipment != null && equipment.getSlotType() == EquipmentSlot.HEAD)) {
 					lines.add(Text.translatable("item.additional_tooltip.equipment_slot.helmet"));

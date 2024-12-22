@@ -98,7 +98,7 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler implements 
 	public void PlayerScreenHandler(PlayerInventory inventory, boolean onServer, PlayerEntity owner, CallbackInfo ci) {
 		this.inventory = inventory;
 
-		var serverConfig = RPGInventory.serverConfig;
+		var serverConfig = RPGInventory.SERVER_CONFIG;
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -109,42 +109,42 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler implements 
 			((SlotCustomization) this.slots.get(i + 36)).slotcustomizationapi$setY(196);
 		}
 
-		if (serverConfig.disable_inventory_crafting_slots) {
+		if (serverConfig.disable_inventory_crafting_slots.get()) {
 			((SlotCustomization) this.slots.get(0)).slotcustomizationapi$setDisabledOverride(true);
 			((SlotCustomization) this.slots.get(1)).slotcustomizationapi$setDisabledOverride(true);
 			((SlotCustomization) this.slots.get(2)).slotcustomizationapi$setDisabledOverride(true);
 			((SlotCustomization) this.slots.get(3)).slotcustomizationapi$setDisabledOverride(true);
 			((SlotCustomization) this.slots.get(4)).slotcustomizationapi$setDisabledOverride(true);
 		} else {
-			((SlotCustomization) this.slots.get(0)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset + 56);
-			((SlotCustomization) this.slots.get(0)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset + 10);
-			((SlotCustomization) this.slots.get(1)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset);
-			((SlotCustomization) this.slots.get(1)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset);
-			((SlotCustomization) this.slots.get(2)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset + 18);
-			((SlotCustomization) this.slots.get(2)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset);
-			((SlotCustomization) this.slots.get(3)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset);
-			((SlotCustomization) this.slots.get(3)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset + 18);
-			((SlotCustomization) this.slots.get(4)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset + 18);
-			((SlotCustomization) this.slots.get(4)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset + 18);
+			((SlotCustomization) this.slots.get(0)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset.get() + 56);
+			((SlotCustomization) this.slots.get(0)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset.get() + 10);
+			((SlotCustomization) this.slots.get(1)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset.get());
+			((SlotCustomization) this.slots.get(1)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset.get());
+			((SlotCustomization) this.slots.get(2)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset.get() + 18);
+			((SlotCustomization) this.slots.get(2)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset.get());
+			((SlotCustomization) this.slots.get(3)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset.get());
+			((SlotCustomization) this.slots.get(3)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset.get() + 18);
+			((SlotCustomization) this.slots.get(4)).slotcustomizationapi$setX(serverConfig.inventory_crafting_slots_x_offset.get() + 18);
+			((SlotCustomization) this.slots.get(4)).slotcustomizationapi$setY(serverConfig.inventory_crafting_slots_y_offset.get() + 18);
 		}
 
 		// reposition vanilla armor slots
 		// head
-		((SlotCustomization) this.slots.get(5)).slotcustomizationapi$setX(serverConfig.head_slot_x_offset);
-		((SlotCustomization) this.slots.get(5)).slotcustomizationapi$setY(serverConfig.head_slot_y_offset);
+		((SlotCustomization) this.slots.get(5)).slotcustomizationapi$setX(serverConfig.head_slot_x_offset.get());
+		((SlotCustomization) this.slots.get(5)).slotcustomizationapi$setY(serverConfig.head_slot_y_offset.get());
 		// chest
-		((SlotCustomization) this.slots.get(6)).slotcustomizationapi$setX(serverConfig.chest_slot_x_offset);
-		((SlotCustomization) this.slots.get(6)).slotcustomizationapi$setY(serverConfig.chest_slot_y_offset);
+		((SlotCustomization) this.slots.get(6)).slotcustomizationapi$setX(serverConfig.chest_slot_x_offset.get());
+		((SlotCustomization) this.slots.get(6)).slotcustomizationapi$setY(serverConfig.chest_slot_y_offset.get());
 		// legs
-		((SlotCustomization) this.slots.get(7)).slotcustomizationapi$setX(serverConfig.legs_slot_x_offset);
-		((SlotCustomization) this.slots.get(7)).slotcustomizationapi$setY(serverConfig.legs_slot_y_offset);
+		((SlotCustomization) this.slots.get(7)).slotcustomizationapi$setX(serverConfig.legs_slot_x_offset.get());
+		((SlotCustomization) this.slots.get(7)).slotcustomizationapi$setY(serverConfig.legs_slot_y_offset.get());
 		// feet
-		((SlotCustomization) this.slots.get(8)).slotcustomizationapi$setX(serverConfig.feet_slot_x_offset);
-		((SlotCustomization) this.slots.get(8)).slotcustomizationapi$setY(serverConfig.feet_slot_y_offset);
+		((SlotCustomization) this.slots.get(8)).slotcustomizationapi$setX(serverConfig.feet_slot_x_offset.get());
+		((SlotCustomization) this.slots.get(8)).slotcustomizationapi$setY(serverConfig.feet_slot_y_offset.get());
 
 		// reposition vanilla offhand slot
-		((SlotCustomization) this.slots.get(45)).slotcustomizationapi$setX(serverConfig.offhand_slot_x_offset);
-		((SlotCustomization) this.slots.get(45)).slotcustomizationapi$setY(serverConfig.offhand_slot_y_offset);
+		((SlotCustomization) this.slots.get(45)).slotcustomizationapi$setX(serverConfig.offhand_slot_x_offset.get());
+		((SlotCustomization) this.slots.get(45)).slotcustomizationapi$setY(serverConfig.offhand_slot_y_offset.get());
 
 		// adding slot tooltips
 		List<Text> list5 = new ArrayList<>();
@@ -176,7 +176,7 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler implements 
 	@Override
 	public void trinkets$updateTrinketSlots(boolean slotsChanged) {
 
-		var serverConfig = RPGInventory.serverConfig;
+		var serverConfig = RPGInventory.SERVER_CONFIG;
 
 		TrinketsApi.getTrinketComponent(owner).ifPresent(trinkets -> {
 			if (slotsChanged) trinkets.update();
@@ -210,62 +210,62 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler implements 
 					int x;
 					int y;
 					if (Objects.equals(groupName, "belts")) {
-						x = serverConfig.belts_group_x_offset;
-						y = serverConfig.belts_group_y_offset;
+						x = serverConfig.belts_group_x_offset.get();
+						y = serverConfig.belts_group_y_offset.get();
 					} else if (Objects.equals(groupName, "shoulders")) {
-						x = serverConfig.shoulders_group_x_offset;
-						y = serverConfig.shoulders_group_y_offset;
+						x = serverConfig.shoulders_group_x_offset.get();
+						y = serverConfig.shoulders_group_y_offset.get();
 					} else if (Objects.equals(groupName, "necklaces")) {
-						x = serverConfig.necklaces_group_x_offset;
-						y = serverConfig.necklaces_group_y_offset;
+						x = serverConfig.necklaces_group_x_offset.get();
+						y = serverConfig.necklaces_group_y_offset.get();
 					} else if (Objects.equals(groupName, "rings_1")) {
-						x = serverConfig.rings_1_group_x_offset;
-						y = serverConfig.rings_1_group_y_offset;
+						x = serverConfig.rings_1_group_x_offset.get();
+						y = serverConfig.rings_1_group_y_offset.get();
 					} else if (Objects.equals(groupName, "rings_2")) {
-						x = serverConfig.rings_2_group_x_offset;
-						y = serverConfig.rings_2_group_y_offset;
+						x = serverConfig.rings_2_group_x_offset.get();
+						y = serverConfig.rings_2_group_y_offset.get();
 					} else if (Objects.equals(groupName, "gloves")) {
-						x = serverConfig.gloves_group_x_offset;
-						y = serverConfig.gloves_group_y_offset;
+						x = serverConfig.gloves_group_x_offset.get();
+						y = serverConfig.gloves_group_y_offset.get();
 					} else if (Objects.equals(groupName, "hand")) {
-						x = serverConfig.hand_group_x_offset;
-						y = serverConfig.hand_group_y_offset;
+						x = serverConfig.hand_group_x_offset.get();
+						y = serverConfig.hand_group_y_offset.get();
 					} else if (Objects.equals(groupName, "alternative_hand")) {
-						x = serverConfig.alternative_hand_group_x_offset;
-						y = serverConfig.alternative_hand_group_y_offset;
+						x = serverConfig.alternative_hand_group_x_offset.get();
+						y = serverConfig.alternative_hand_group_y_offset.get();
 					} else if (Objects.equals(groupName, "alternative_offhand")) {
-						x = serverConfig.alternative_offhand_group_x_offset;
-						y = serverConfig.alternative_offhand_group_y_offset;
+						x = serverConfig.alternative_offhand_group_x_offset.get();
+						y = serverConfig.alternative_offhand_group_y_offset.get();
 					} else if (Objects.equals(groupName, "spell_slot_1")) {
-						x = serverConfig.spell_slots_x_offset;
-						y = serverConfig.spell_slots_y_offset;
+						x = serverConfig.spell_slots_x_offset.get();
+						y = serverConfig.spell_slots_y_offset.get();
 					} else if (Objects.equals(groupName, "spell_slot_2")) {
-						x = serverConfig.spell_slots_x_offset + 18;
-						y = serverConfig.spell_slots_y_offset;
+						x = serverConfig.spell_slots_x_offset.get() + 18;
+						y = serverConfig.spell_slots_y_offset.get();
 					} else if (Objects.equals(groupName, "spell_slot_3")) {
-						x = serverConfig.spell_slots_x_offset + 36;
-						y = serverConfig.spell_slots_y_offset;
+						x = serverConfig.spell_slots_x_offset.get() + 36;
+						y = serverConfig.spell_slots_y_offset.get();
 					} else if (Objects.equals(groupName, "spell_slot_4")) {
-						x = serverConfig.spell_slots_x_offset + 54;
-						y = serverConfig.spell_slots_y_offset;
+						x = serverConfig.spell_slots_x_offset.get() + 54;
+						y = serverConfig.spell_slots_y_offset.get();
 					} else if (Objects.equals(groupName, "spell_slot_5")) {
-						x = serverConfig.spell_slots_x_offset;
-						y = serverConfig.spell_slots_y_offset + 18;
+						x = serverConfig.spell_slots_x_offset.get();
+						y = serverConfig.spell_slots_y_offset.get() + 18;
 					} else if (Objects.equals(groupName, "spell_slot_6")) {
-						x = serverConfig.spell_slots_x_offset + 18;
-						y = serverConfig.spell_slots_y_offset + 18;
+						x = serverConfig.spell_slots_x_offset.get() + 18;
+						y = serverConfig.spell_slots_y_offset.get() + 18;
 					} else if (Objects.equals(groupName, "spell_slot_7")) {
-						x = serverConfig.spell_slots_x_offset + 36;
-						y = serverConfig.spell_slots_y_offset + 18;
+						x = serverConfig.spell_slots_x_offset.get() + 36;
+						y = serverConfig.spell_slots_y_offset.get() + 18;
 					} else if (Objects.equals(groupName, "spell_slot_8")) {
-						x = serverConfig.spell_slots_x_offset + 54;
-						y = serverConfig.spell_slots_y_offset + 18;
+						x = serverConfig.spell_slots_x_offset.get() + 54;
+						y = serverConfig.spell_slots_y_offset.get() + 18;
 					} else if (Objects.equals(groupName, "sheathed_hand")) {
-						x = serverConfig.hand_group_x_offset;
-						y = serverConfig.hand_group_y_offset;
+						x = serverConfig.hand_group_x_offset.get();
+						y = serverConfig.hand_group_y_offset.get();
 					} else if (Objects.equals(groupName, "sheathed_offhand")) {
-						x = serverConfig.offhand_slot_x_offset;
-						y = serverConfig.offhand_slot_y_offset;
+						x = serverConfig.offhand_slot_x_offset.get();
+						y = serverConfig.offhand_slot_y_offset.get();
 					} else if (Objects.equals(groupName, "empty_hand") || Objects.equals(groupName, "empty_offhand")) {
 						continue;
 					} else {

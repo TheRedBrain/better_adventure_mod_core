@@ -181,7 +181,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 			int j = this.y;
 			int k;
 			int m;
-			boolean showInactiveSlots = RPGInventoryClient.clientConfigHolder.getConfig().generalClientConfig.show_inactive_inventory_slots;
+			boolean showInactiveSlots = RPGInventoryClient.CLIENT_CONFIG.show_inactive_inventory_slots.get();
 			for (k = 0; k < (showInactiveSlots ? 27 : Math.min(inventorySize, 27)); ++k) {
 				m = (k / 9);
 				context.drawTexture(SLOT_TEXTURE, i + 8 + (k - (m * 9)) * 18, j + 53 + (m * 18), 0, 0, 18, 18, 18, 18);

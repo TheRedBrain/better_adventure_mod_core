@@ -20,7 +20,7 @@ public class ClientPacketRegistry {
 		ClientPlayNetworking.registerGlobalReceiver(SheathedWeaponsPacket.PACKET_ID, new SheathedWeaponsPacketReceiver());
 
 		ClientPlayNetworking.registerGlobalReceiver(ServerConfigSyncPacket.PACKET_ID, (payload, context) -> {
-			RPGInventory.serverConfig = payload.serverConfig();
+			RPGInventory.SERVER_CONFIG = payload.serverConfig();
 		});
 	}
 }

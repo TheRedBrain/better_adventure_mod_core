@@ -52,7 +52,7 @@ public class SheathedHandItemFeatureRenderer<T extends LivingEntity> extends Hel
 				float rotation_positive_y = 90.0F;
 				float rotation_positive_x = 35.0F;
 				String itemId = Registries.ITEM.getId(handStackItem).toString();
-				Float[] itemConfiguration = RPGInventoryClient.clientConfigHolder.getConfig().sheathedItemPositionsClientConfig.sheathed_hand_item_positions.get(itemId);
+				Float[] itemConfiguration = RPGInventoryClient.CLIENT_CONFIG.sheathed_hand_item_positions.get(itemId);
 				if (itemConfiguration != null && itemConfiguration.length == 9) {
 					initial_translation_x = itemConfiguration[0];
 					initial_translation_y = itemConfiguration[1];

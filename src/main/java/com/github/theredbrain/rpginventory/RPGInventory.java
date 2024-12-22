@@ -2,14 +2,11 @@ package com.github.theredbrain.rpginventory;
 
 import com.github.theredbrain.inventorysizeattributes.entity.player.DuckPlayerEntityMixin;
 import com.github.theredbrain.rpginventory.config.ServerConfig;
-import com.github.theredbrain.rpginventory.config.ServerConfigWrapper;
 import com.github.theredbrain.rpginventory.registry.GameRulesRegistry;
 import com.github.theredbrain.rpginventory.registry.ItemRegistry;
 import com.github.theredbrain.rpginventory.registry.PredicateRegistry;
 import com.github.theredbrain.rpginventory.registry.ServerPacketRegistry;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -22,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class RPGInventory implements ModInitializer {
 	public static final String MOD_ID = "rpginventory";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static ServerConfig serverConfig;
+	public static ServerConfig SERVER_CONFIG = ConfigApiJava.registerAndLoadConfig(ServerConfig::new);
 
 	public static RegistryEntry<EntityAttribute> ACTIVE_SPELL_SLOT_AMOUNT;
 
@@ -45,10 +42,6 @@ public class RPGInventory implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("We are going on an adventure!");
-
-		// Config
-		AutoConfig.register(ServerConfigWrapper.class, PartitioningSerializer.wrap(JanksonConfigSerializer::new));
-		serverConfig = ((ServerConfigWrapper) AutoConfig.getConfigHolder(ServerConfigWrapper.class).getConfig()).server;
 
 		// Packets
 		ServerPacketRegistry.init();
