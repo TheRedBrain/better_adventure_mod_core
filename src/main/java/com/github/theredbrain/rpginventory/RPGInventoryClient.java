@@ -9,9 +9,6 @@ import com.github.theredbrain.rpginventory.registry.ClientPacketRegistry;
 import com.github.theredbrain.rpginventory.registry.KeyBindingsRegistry;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.fzzyhmstrs.fzzy_config.api.RegisterType;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -22,9 +19,10 @@ import java.util.List;
 
 
 public class RPGInventoryClient implements ClientModInitializer {
-	public static ClientConfig CLIENT_CONFIG = ConfigApiJava.registerAndLoadConfig(ClientConfig::new, RegisterType.CLIENT);
+	public static ClientConfig CLIENT_CONFIG;
 
 	public RPGInventoryClient() {
+		CLIENT_CONFIG = ConfigApiJava.registerAndLoadConfig(ClientConfig::new, RegisterType.CLIENT);
 	}
 
 	public static List<MutablePair<Text, List<Text>>> getPlayerAttributeScreenData(MinecraftClient client) {

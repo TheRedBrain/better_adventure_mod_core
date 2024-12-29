@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class RPGInventory implements ModInitializer {
 	public static final String MOD_ID = "rpginventory";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static ServerConfig SERVER_CONFIG = ConfigApiJava.registerAndLoadConfig(ServerConfig::new);
+	public static ServerConfig SERVER_CONFIG;
 
 	public static RegistryEntry<EntityAttribute> ACTIVE_SPELL_SLOT_AMOUNT;
 
@@ -42,6 +42,7 @@ public class RPGInventory implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("We are going on an adventure!");
+		SERVER_CONFIG = ConfigApiJava.registerAndLoadConfig(ServerConfig::new);
 
 		// Packets
 		ServerPacketRegistry.init();
