@@ -1,3 +1,7 @@
+# 2.3.0
+
+- added compatibility with "RPG Crafting"
+
 # 2.2.0
 
 - removed feature: Attribute Screen, this feature was exported into a standalone mod called "Player Attribute Screen". The "attribute_screen_configuration" config value should work in the new mods config file.

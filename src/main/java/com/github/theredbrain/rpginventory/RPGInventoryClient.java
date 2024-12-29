@@ -2,6 +2,7 @@ package com.github.theredbrain.rpginventory;
 
 import com.github.theredbrain.backpackattribute.BackpackAttributeClient;
 import com.github.theredbrain.playerattributescreen.PlayerAttributeScreenClient;
+import com.github.theredbrain.rpgcrafting.RPGCraftingClient;
 import com.github.theredbrain.rpginventory.config.ClientConfig;
 import com.github.theredbrain.rpginventory.registry.ClientEventsRegistry;
 import com.github.theredbrain.rpginventory.registry.ClientPacketRegistry;
@@ -44,7 +45,7 @@ public class RPGInventoryClient implements ClientModInitializer {
 
 	public static void openHandCraftingScreen(MinecraftClient client) {
 		if (RPGInventory.isRPGCraftingLoaded) {
-//			RPGCraftingClient.openHandCraftingScreen(client);// TODO RPG Crafting Integration
+			RPGCraftingClient.openHandCraftingScreen(client);
 		} else if (client.player != null) {
 			client.player.sendMessage(Text.translatable("hud.message.rpgCraftingNotInstalled"));
 		}

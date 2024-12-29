@@ -102,8 +102,8 @@ dependencies {
 	// Player Attributes Screen
 	modImplementation "maven.modrinth:player-attribute-screen:${project.player_attribute_screen_version}"
 
-	// RPG Crafting // TODO RPG Crafting Integration
-//	modImplementation "maven.modrinth:rpg-crafting:${project.rpg_crafting_version}"
+	// RPG Crafting
+	modImplementation "maven.modrinth:rpg-crafting:${project.rpg_crafting_version}"
 
 	// Resource Bar API
 	modImplementation "maven.modrinth:resource-bar-api:${project.resource_bar_api_version}"
