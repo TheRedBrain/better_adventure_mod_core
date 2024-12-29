@@ -35,7 +35,7 @@ public class SwapHandItemsPacketReceiver implements ServerPlayNetworking.PlayPay
 		if (itemStack.isEmpty() && alternativeItemStack.isEmpty()) {
 			return;
 		}
-		if (RPGInventory.isStaminaAttributesLoaded && RPGInventory.SERVER_CONFIG.swapping_hand_items_requires_stamina.get() && ((StaminaUsingEntity) player).staminaattributes$getStamina() <= 0 && !player.isCreative()) {
+		if (RPGInventory.isStaminaAttributesLoaded && RPGInventory.SERVER_CONFIG.staminaAttributesCompat.swapping_hand_items_requires_stamina.get() && ((StaminaUsingEntity) player).staminaattributes$getStamina() <= 0 && !player.isCreative()) {
 			player.sendMessageToClient(Text.translatable("hud.message.staminaTooLow"), true);
 			return;
 		}
@@ -56,7 +56,7 @@ public class SwapHandItemsPacketReceiver implements ServerPlayNetworking.PlayPay
 			((DuckPlayerInventoryMixin) player.getInventory()).rpginventory$setAlternativeOffhand(itemStack);
 		}
 		if (RPGInventory.isStaminaAttributesLoaded && !player.isCreative()) {
-			((StaminaUsingEntity) player).staminaattributes$addStamina(-RPGInventory.SERVER_CONFIG.swapping_hand_items_stamina_cost.get());
+			((StaminaUsingEntity) player).staminaattributes$addStamina(-RPGInventory.SERVER_CONFIG.staminaAttributesCompat.swapping_hand_items_stamina_cost.get());
 		}
 		player.getServerWorld().playSound(null, player.getBlockPos().getX(), player.getBlockPos().getY(), player.getBlockPos().getZ(), SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.PLAYERS, 1.0F, 1.0F);
 	}

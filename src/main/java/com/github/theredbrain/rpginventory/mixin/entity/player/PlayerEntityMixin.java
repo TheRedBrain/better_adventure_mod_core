@@ -113,7 +113,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 
 		keep_inventory_on_death_item_equipped = keep_inventory_on_death_item_equipped || rpginventory$hasEquipped(keep_inventory_on_death_item_equipped_predicate);
 
-		Optional<RegistryEntry.Reference<StatusEffect>> keep_inventory_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.keep_inventory_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> keep_inventory_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.keep_inventory_status_effect_identifier.get());
 		if (keep_inventory_status_effect.isPresent()) {
 			if (keep_inventory_on_death_item_equipped) {
 				if (!this.hasStatusEffect(keep_inventory_status_effect.get())) {
@@ -126,10 +126,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 
 		ItemStack itemStackMainHand = this.getEquippedStack(EquipmentSlot.MAINHAND);
 		ItemStack itemStackOffHand = this.getEquippedStack(EquipmentSlot.OFFHAND);
-		Optional<RegistryEntry.Reference<StatusEffect>> adventure_building_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.building_mode_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> adventure_building_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.building_mode_status_effect_identifier.get());
 		boolean hasAdventureBuildingEffect = adventure_building_status_effect.isPresent() && this.hasStatusEffect(adventure_building_status_effect.get());
 
-		Optional<RegistryEntry.Reference<StatusEffect>> no_attack_item_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.no_attack_item_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> no_attack_item_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.no_attack_item_status_effect_identifier.get());
 		if (no_attack_item_status_effect.isPresent()) {
 			if (!itemStackMainHand.isIn(Tags.ATTACK_ITEMS) && !this.isCreative() && !hasAdventureBuildingEffect && !RPGInventory.SERVER_CONFIG.allow_attacking_with_non_attack_items.get()) {
 				if (!this.hasStatusEffect(no_attack_item_status_effect.get())) {
@@ -140,7 +140,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 			}
 		}
 
-		Optional<RegistryEntry.Reference<StatusEffect>> needs_two_handing_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.needs_two_handing_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> needs_two_handing_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.needs_two_handing_status_effect_identifier.get());
 		if (needs_two_handing_status_effect.isPresent()) {
 			if (itemStackMainHand.isIn(Tags.TWO_HANDED_ITEMS) && (this.rpginventory$isHandStackSheathed() || !this.rpginventory$isOffhandStackSheathed()) && !this.isCreative() && !hasAdventureBuildingEffect) {
 				if (!this.hasStatusEffect(needs_two_handing_status_effect.get())) {
@@ -205,7 +205,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 
 	@Inject(method = "dropInventory", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;vanishCursedItems()V", ordinal = 0), cancellable = true)
 	private void rpginventory$pre_vanishCursedItems(CallbackInfo ci) {
-		Optional<RegistryEntry.Reference<StatusEffect>> keep_inventory_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.keep_inventory_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> keep_inventory_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.keep_inventory_status_effect_identifier.get());
 		if (keep_inventory_status_effect.isPresent() && this.hasStatusEffect(keep_inventory_status_effect.get())) {
 			this.rpginventory$breakKeepInventoryItems();
 			ci.cancel();
@@ -316,13 +316,13 @@ public abstract class PlayerEntityMixin extends LivingEntity implements DuckPlay
 
 	@Unique
 	private void rpginventory$ejectNonHotbarItemsFromHotbar() { // FIXME is only called once?
-		Optional<RegistryEntry.Reference<StatusEffect>> adventure_building_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.building_mode_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> adventure_building_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.building_mode_status_effect_identifier.get());
 		boolean hasAdventureBuildingEffect = adventure_building_status_effect.isPresent() && this.hasStatusEffect(adventure_building_status_effect.get());
 
-		Optional<RegistryEntry.Reference<StatusEffect>> civilisation_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.civilisation_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> civilisation_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.civilisation_status_effect_identifier.get());
 		boolean hasCivilisationEffect = civilisation_status_effect.isPresent() && this.hasStatusEffect(civilisation_status_effect.get());
 
-		Optional<RegistryEntry.Reference<StatusEffect>> wilderness_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.wilderness_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> wilderness_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.wilderness_status_effect_identifier.get());
 		boolean hasWildernessEffect = wilderness_status_effect.isPresent() && this.hasStatusEffect(wilderness_status_effect.get());
 
 		boolean canChangeEquipment = this.getServer() != null && this.getServer().getGameRules().getBoolean(GameRulesRegistry.CAN_CHANGE_EQUIPMENT);

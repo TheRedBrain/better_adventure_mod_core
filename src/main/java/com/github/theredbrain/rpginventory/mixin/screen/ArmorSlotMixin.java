@@ -39,10 +39,10 @@ public class ArmorSlotMixin {
 			bl = this.entity.getServer().getGameRules().getBoolean(GameRulesRegistry.CAN_CHANGE_EQUIPMENT);
 		}
 
-		Optional<RegistryEntry.Reference<StatusEffect>> civilisation_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.civilisation_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> civilisation_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.civilisation_status_effect_identifier.get());
 		boolean hasCivilisationEffect = civilisation_status_effect.isPresent() && this.entity.hasStatusEffect(civilisation_status_effect.get());
 
-		Optional<RegistryEntry.Reference<StatusEffect>> wilderness_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.wilderness_status_effect_identifier.get());
+		Optional<RegistryEntry.Reference<StatusEffect>> wilderness_status_effect = Registries.STATUS_EFFECT.getEntry(RPGInventory.SERVER_CONFIG.statusEffects.wilderness_status_effect_identifier.get());
 		boolean hasWildernessEffect = wilderness_status_effect.isPresent() && this.entity.hasStatusEffect(wilderness_status_effect.get());
 
 		cir.setReturnValue((cir.getReturnValue() || rpginventory$isOfEquipmentTag(stack, this.equipmentSlot)) && (hasCivilisationEffect || (this.entity instanceof PlayerEntity player && player.isCreative()) || (bl && !hasWildernessEffect)));
