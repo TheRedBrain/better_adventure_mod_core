@@ -6,24 +6,26 @@ import com.github.theredbrain.rpginventory.config.ClientConfig;
 import com.github.theredbrain.rpginventory.entity.player.DuckPlayerEntityMixin;
 import com.github.theredbrain.rpginventory.entity.player.DuckPlayerInventoryMixin;
 import com.github.theredbrain.rpginventory.registry.Tags;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
@@ -35,6 +37,21 @@ public abstract class InGameHudMixin {
 	@Shadow
 	protected abstract void renderHotbarItem(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack stack, int seed);
 
+	@Shadow
+	@Final
+	private static Identifier HOTBAR_TEXTURE;
+	@Shadow
+	@Final
+	private static Identifier HOTBAR_SELECTION_TEXTURE;
+	@Shadow
+	@Final
+	private MinecraftClient client;
+	@Shadow
+	@Final
+	private static Identifier HOTBAR_ATTACK_INDICATOR_BACKGROUND_TEXTURE;
+	@Shadow
+	@Final
+	private static Identifier HOTBAR_ATTACK_INDICATOR_PROGRESS_TEXTURE;
 	@Unique
 	private static final Identifier HOTBAR_SELECTION_FIXED_TEXTURE = RPGInventory.identifier("hud/hotbar_selection_fixed");
 	@Unique
@@ -44,34 +61,45 @@ public abstract class InGameHudMixin {
 	@Unique
 	private static final Identifier HOTBAR_ALTERNATE_HAND_SLOTS_TEXTURE = RPGInventory.identifier("hud/hotbar_alternate_hand_slots");
 
-//	@WrapOperation(
-//			method = "renderMainHud",
-//			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
-//	)
-//	private void bypassExpensiveCalculationIfNecessary(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
-////		if (InventorySizeAttributesClient.CLIENT_CONFIG.hud_shows_disabled_hotbar_slots.get()) {
-////			original.call(instance, context, tickCounter);
-////		} else {
-////			PlayerEntity playerEntity = this.getCameraPlayer();
-////			if (playerEntity != null) {
-////				int activeHotbarSlotAmount = InventorySizeAttributes.getActiveHotbarSlotAmount(playerEntity);
-////				int newX = instance.getScaledWindowWidth() / 2;
-////				int newWidth = 182;
-////				instance.drawGuiTexture(texture, newX, y, newWidth, height);
-////			}
-////		}
-//		// TODO if alternative hotbar is enabled
-////				do all the stuff
-////				else render the vanilla hotbar
-////				use existing config options to customize the alternative hotbar
-////				add support for Raised
-//	}
+	@WrapOperation(
+			method = "renderMainHud",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
+	)
+	private void rpginventory$wrap_renderMainHud(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
+		if (RPGInventoryClient.CLIENT_CONFIG.enable_hotbar_overhaul.get()) {
+			rpginventory$renderOverhauledHotbar(context, tickCounter);
+		} else {
+			original.call(instance, context, tickCounter);
+		}
+	}
 
-	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
-	private void rpginventory$post_renderHotbar(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+	@Unique
+	private void rpginventory$renderOverhauledHotbar(DrawContext context, RenderTickCounter tickCounter) {
+
 		PlayerEntity playerEntity = this.getCameraPlayer();
 		if (playerEntity != null) {
 			ClientConfig clientConfig = RPGInventoryClient.CLIENT_CONFIG;
+			ItemStack itemStack = playerEntity.getOffHandStack();
+			Arm arm = playerEntity.getMainArm().getOpposite();
+			int i = context.getScaledWindowWidth() / 2;
+			int j = 182;
+			int k = 91;
+			RenderSystem.enableBlend();
+			context.getMatrices().push();
+			context.getMatrices().translate(0.0F, 0.0F, -90.0F);
+
+//			if (clientConfig.hotBarOverhaul.always_show_all_hotbar_slots.get()) { // TODO show only active hotbar slots
+				context.drawGuiTexture(HOTBAR_TEXTURE, i - 91, context.getScaledWindowHeight() - 22, 182, 22);
+
+				if (((DuckPlayerEntityMixin) playerEntity).rpginventory$isHandStackSheathed() || clientConfig.hotBarOverhaul.always_show_selected_hotbar_slot.get()) {
+					context.drawGuiTexture(
+							HOTBAR_SELECTION_TEXTURE, i - 91 - 1 + playerEntity.getInventory().selectedSlot * 20, context.getScaledWindowHeight() - 22 - 1, 24, 23
+					);
+				}
+//			} else { // TODO show only active hotbar slots
+//
+//			}
+
 			ItemStack itemStackHand = ((DuckPlayerInventoryMixin) playerEntity.getInventory()).rpginventory$getHand();
 			ItemStack itemStackOffHand = playerEntity.getInventory().offHand.get(0);
 			ItemStack itemStackAlternativeHand = ((DuckPlayerInventoryMixin) playerEntity.getInventory()).rpginventory$getAlternativeHand();
@@ -89,13 +117,13 @@ public abstract class InGameHudMixin {
 			int x;
 			int y;
 
-			if (clientConfig.show_empty_hand_slots.get() || !(itemStackHand.isEmpty() || itemStackHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackOffHand.isEmpty() || itemStackOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
-				x = context.getScaledWindowWidth() / 2 + clientConfig.hand_slots_offset_x.get();
-				y = context.getScaledWindowHeight() + clientConfig.hand_slots_offset_y.get();
+			if (clientConfig.hotBarOverhaul.show_empty_hand_slots.get() || !(itemStackHand.isEmpty() || itemStackHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackOffHand.isEmpty() || itemStackOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
+				x = context.getScaledWindowWidth() / 2 + clientConfig.hotBarOverhaul.hand_slots_offset_x.get();
+				y = context.getScaledWindowHeight() + clientConfig.hotBarOverhaul.hand_slots_offset_y.get();
 
 				context.drawGuiTexture(HOTBAR_HAND_SLOTS_TEXTURE, x, y, 49, 24);
 
-				boolean offhand_slot_is_right = clientConfig.offhand_item_is_right.get();
+				boolean offhand_slot_is_right = clientConfig.hotBarOverhaul.offhand_item_is_right.get();
 				this.renderHotbarItem(context, x + 23, y + 4, tickCounter, playerEntity, offhand_slot_is_right ? itemStackOffHand : itemStackHand, l++);
 				this.renderHotbarItem(context, x + 3, y + 4, tickCounter, playerEntity, offhand_slot_is_right ? itemStackHand : itemStackOffHand, l++);
 
@@ -108,53 +136,79 @@ public abstract class InGameHudMixin {
 				}
 			}
 
-			if (clientConfig.show_empty_alternative_hand_slots.get() || !(itemStackAlternativeHand.isEmpty() || itemStackAlternativeHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackAlternativeOffHand.isEmpty() || itemStackAlternativeOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
-				x = context.getScaledWindowWidth() / 2 + clientConfig.alternative_hand_slots_offset_x.get();
-				y = context.getScaledWindowHeight() + clientConfig.alternative_hand_slots_offset_y.get();
+			if (clientConfig.hotBarOverhaul.show_empty_alternative_hand_slots.get() || !(itemStackAlternativeHand.isEmpty() || itemStackAlternativeHand.isIn(Tags.EMPTY_HAND_WEAPONS)) || !(itemStackAlternativeOffHand.isEmpty() || itemStackAlternativeOffHand.isIn(Tags.EMPTY_HAND_WEAPONS))) {
+				x = context.getScaledWindowWidth() / 2 + clientConfig.hotBarOverhaul.alternative_hand_slots_offset_x.get();
+				y = context.getScaledWindowHeight() + clientConfig.hotBarOverhaul.alternative_hand_slots_offset_y.get();
 
 				context.drawGuiTexture(HOTBAR_ALTERNATE_HAND_SLOTS_TEXTURE, x, y, 49, 24);
 
-				boolean alternative_offhand_slot_is_right = clientConfig.alternative_offhand_item_is_right.get();
+				boolean alternative_offhand_slot_is_right = clientConfig.hotBarOverhaul.alternative_offhand_item_is_right.get();
 				this.renderHotbarItem(context, x + 10, y + 4, tickCounter, playerEntity, alternative_offhand_slot_is_right ? itemStackAlternativeHand : itemStackAlternativeOffHand, l++);
 				this.renderHotbarItem(context, x + 30, y + 4, tickCounter, playerEntity, alternative_offhand_slot_is_right ? itemStackAlternativeOffHand : itemStackAlternativeHand, l);
 			}
-		}
-	}
+//			if (!itemStack.isEmpty()) {
+//				if (arm == Arm.LEFT) {
+//					context.drawGuiTexture(HOTBAR_OFFHAND_LEFT_TEXTURE, i - 91 - 29, context.getScaledWindowHeight() - 23, 29, 24);
+//				} else {
+//					context.drawGuiTexture(HOTBAR_OFFHAND_RIGHT_TEXTURE, i + 91, context.getScaledWindowHeight() - 23, 29, 24);
+//				}
+//			}
 
-	@WrapWithCondition(
-			method = "renderHotbar",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 1)
-	)
-	private boolean rpginventory$checkIfSelectedHotbarSlotIndicatorShouldBeRendered(DrawContext instance, Identifier texture, int x, int y, int width, int height) {
-		boolean isHandSheathed = false;
-		PlayerEntity playerEntity = this.getCameraPlayer();
-		if (playerEntity != null) {
-			isHandSheathed = ((DuckPlayerEntityMixin) playerEntity).rpginventory$isHandStackSheathed();
-		}
-		return isHandSheathed || RPGInventoryClient.CLIENT_CONFIG.always_show_selected_hotbar_slot.get();
-	}
+			context.getMatrices().pop();
+			RenderSystem.disableBlend();
+			l = 1;
 
-	// effectively disables rendering of the normal offhand slot in the HUD
-	@Redirect(
-			method = "renderHotbar",
-			at = @At(
-					value = "INVOKE",
-					target = "Lnet/minecraft/entity/player/PlayerEntity;getOffHandStack()Lnet/minecraft/item/ItemStack;"
-			)
-	)
-	public ItemStack overhauleddamage$redirect_getOffHandStack(PlayerEntity instance) {
-		return ItemStack.EMPTY;
+//			if (clientConfig.hotBarOverhaul.always_show_all_hotbar_slots.get()) { // TODO show only active hotbar slots
+				for (int m = 0; m < 9; m++) {
+					int n = i - 90 + m * 20 + 2;
+					int o = context.getScaledWindowHeight() - 16 - 3;
+					this.renderHotbarItem(context, n, o, tickCounter, playerEntity, playerEntity.getInventory().main.get(m), l++);
+				}
+//			} else { // TODO show only active hotbar slots
+//
+//			}
+
+//			if (!itemStack.isEmpty()) {
+//				int m = context.getScaledWindowHeight() - 16 - 3;
+//				if (arm == Arm.LEFT) {
+//					this.renderHotbarItem(context, i - 91 - 26, m, tickCounter, playerEntity, itemStack, l++);
+//				} else {
+//					this.renderHotbarItem(context, i + 91 + 10, m, tickCounter, playerEntity, itemStack, l++);
+//				}
+//			}
+
+			if (this.client.options.getAttackIndicator().getValue() == AttackIndicator.HOTBAR) {
+				RenderSystem.enableBlend();
+				ClientPlayerEntity clientPlayerEntity = this.client.player;
+				float f = clientPlayerEntity.getAttackCooldownProgress(0.0F);
+				if (f < 1.0F) {
+					int n = context.getScaledWindowHeight() - 20;
+					int o = i + 91 + 6;
+					if (arm == Arm.RIGHT) {
+						o = i - 91 - 22;
+					}
+
+					int p = (int) (f * 19.0F);
+					context.drawGuiTexture(HOTBAR_ATTACK_INDICATOR_BACKGROUND_TEXTURE, o, n, 18, 18);
+					context.drawGuiTexture(HOTBAR_ATTACK_INDICATOR_PROGRESS_TEXTURE, 18, 18, 0, 18 - p, o, n + 18 - p, 18, p);
+				}
+
+				RenderSystem.disableBlend();
+			}
+		}
+		// TODO if alternative hotbar is enabled
+//				do all the stuff
+//				else render the vanilla hotbar
+//				use existing config options to customize the alternative hotbar
+//				add support for Raised
 	}
 
 	// disables rendering of the armor bar when disabled in the client config
-	@Redirect(
+	@WrapOperation(
 			method = "renderArmor",
-			at = @At(
-					value = "INVOKE",
-					target = "Lnet/minecraft/entity/player/PlayerEntity;getArmor()I"
-			)
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getArmor()I")
 	)
-	private static int overhauleddamage$redirect_getArmor(PlayerEntity instance) {
-		return RPGInventoryClient.CLIENT_CONFIG.show_armor_bar.get() ? instance.getArmor() : 0;
+	private static int rpginventory$wrap_getArmor(PlayerEntity instance, Operation<Integer> original) {
+		return RPGInventoryClient.CLIENT_CONFIG.show_armor_bar.get() ? original.call(instance) : 0;
 	}
 }

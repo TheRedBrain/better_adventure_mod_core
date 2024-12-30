@@ -3,6 +3,7 @@ package com.github.theredbrain.rpginventory.config;
 import com.github.theredbrain.rpginventory.RPGInventory;
 import me.fzzyhmstrs.fzzy_config.annotations.ConvertFrom;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -16,19 +17,24 @@ public class ClientConfig extends Config {
 		super(RPGInventory.identifier("client"));
 	}
 
-	public ValidatedBoolean always_show_selected_hotbar_slot = new ValidatedBoolean(false);
+	public HotBarOverhaul hotBarOverhaul = new HotBarOverhaul();
 
-	public ValidatedBoolean hud_shows_disabled_hotbar_slots = new ValidatedBoolean(true);
+	public ValidatedBoolean enable_hotbar_overhaul = new ValidatedBoolean(true);
 
-	public ValidatedBoolean show_empty_hand_slots = new ValidatedBoolean(true);
-	public ValidatedInt hand_slots_offset_x = new ValidatedInt(-140);
-	public ValidatedInt hand_slots_offset_y = new ValidatedInt(-23);
-	public ValidatedBoolean offhand_item_is_right = new ValidatedBoolean(true);
+	public static class HotBarOverhaul extends ConfigSection {
+		public ValidatedBoolean always_show_selected_hotbar_slot = new ValidatedBoolean(false);
+//		public ValidatedBoolean always_show_all_hotbar_slots = new ValidatedBoolean(false); // TODO show only active hotbar slots
 
-	public ValidatedBoolean show_empty_alternative_hand_slots = new ValidatedBoolean(true);
-	public ValidatedInt alternative_hand_slots_offset_x = new ValidatedInt(91);
-	public ValidatedInt alternative_hand_slots_offset_y = new ValidatedInt(-23);
-	public ValidatedBoolean alternative_offhand_item_is_right = new ValidatedBoolean(true);
+		public ValidatedBoolean show_empty_hand_slots = new ValidatedBoolean(true);
+		public ValidatedInt hand_slots_offset_x = new ValidatedInt(-140);
+		public ValidatedInt hand_slots_offset_y = new ValidatedInt(-23);
+		public ValidatedBoolean offhand_item_is_right = new ValidatedBoolean(true);
+
+		public ValidatedBoolean show_empty_alternative_hand_slots = new ValidatedBoolean(true);
+		public ValidatedInt alternative_hand_slots_offset_x = new ValidatedInt(91);
+		public ValidatedInt alternative_hand_slots_offset_y = new ValidatedInt(-23);
+		public ValidatedBoolean alternative_offhand_item_is_right = new ValidatedBoolean(true);
+	}
 
 	public ValidatedBoolean show_armor_bar = new ValidatedBoolean(false);
 
@@ -54,6 +60,7 @@ public class ClientConfig extends Config {
 	public ValidatedBoolean slots_with_unusable_items_have_overlay = new ValidatedBoolean(true);
 	public ValidatedColor first_overlay_colour_for_slots_with_unusable_items = new ValidatedColor(200, 5, 5, 50);
 	public ValidatedColor second_overlay_colour_for_slots_with_unusable_items = new ValidatedColor(200, 5, 5, 50);
+
 	public ValidatedBoolean show_slot_tooltips = new ValidatedBoolean(true);
 	public ValidatedBoolean show_item_tooltip_two_handed_items = new ValidatedBoolean(true);
 	public ValidatedBoolean show_item_tooltip_equipment_slots = new ValidatedBoolean(true);
